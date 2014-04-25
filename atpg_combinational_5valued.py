@@ -12,52 +12,52 @@ class MyOrderedDict(OrderedDict):
 
 def output_val(val_non_faulty, val_faulty):
     return{
-           '00':'0',
-           '01':'D',
-           '0x':'x',
-           '10':'D_bar',
-           '11':'1',
-           '1x':'x',
-           'x0':'x',
-           'x1':'x',
-           'xx':'x',
-           
-           }[val_non_faulty + val_faulty]
+        '00':'0',
+        '01':'D',
+        '0x':'x',
+        '10':'D_bar',
+        '11':'1',
+        '1x':'x',
+        'x0':'x',
+        'x1':'x',
+        'xx':'x',
+          
+        }[val_non_faulty + val_faulty]
     
 
 "This funtion is to calculate outputs of a gate out_node based on current values of its input. Returns output value"
 def calc_output(G, out_node):
     def or_three_valued(a, b):
         return{
-         '00': '0',
-         '01': '1',
-         '0x': 'x',
-         '10': '1',
-         '11': '1',
-         '1x': '1',
-         'x0': 'x',
-         'x1': '1',
-         'xx': 'x',
+            '00': '0',
+            '01': '1',
+            '0x': 'x',
+            '10': '1',
+            '11': '1',
+            '1x': '1',
+            'x0': 'x',
+            'x1': '1',
+            'xx': 'x',
          }[a + b]
     
     def and_three_valued(a, b):
         return{
-         '00': '0',
-         '01': '0',
-         '0x': '0',
-         '10': '0',
-         '11': '1',
-         '1x': 'x',
-         'x0': '0',
-         'x1': 'x',
-         'xx': 'x',
+            '00': '0',
+            '01': '0',
+            '0x': '0',
+            '10': '0',
+            '11': '1',
+            '1x': 'x',
+            'x0': '0',
+            'x1': 'x',
+            'xx': 'x',
          }[a + b]
     
     def not_three_valued(a):
         return{
-         '0': '1',
-         '1': '0',
-         'x': 'x',
+            '0': '1',
+            '1': '0',
+            'x': 'x',
          }[a]
     
     def nand_three_valued(a, b):
@@ -74,21 +74,21 @@ def calc_output(G, out_node):
     
     def non_faulty(a):
         return{
-               '0':'0',
-               '1':'1',
-               'x':'x',
-               'D':'0',
-               'D_bar':'1'
-               }[a]
+            '0':'0',
+            '1':'1',
+            'x':'x',
+            'D':'0',
+            'D_bar':'1'
+            }[a]
                
     def faulty(a):
         return{
-               '0':'0',
-               '1':'1',
-               'x':'x',
-               'D':'1',
-               'D_bar':'0'
-               }[a]
+            '0':'0',
+            '1':'1',
+            'x':'x',
+            'D':'1',
+            'D_bar':'0'
+            }[a]
     def and_gate(a, b):
         a_non_faulty = non_faulty(a)
         b_non_faulty = non_faulty(a)
@@ -331,56 +331,56 @@ def get_controllability(G, node):
                 get_controllability(G, incoming)
          l0 = []
          l1 = []
-         for predecessors in G.predecessors_iter(node):
-             l0.append(G.node[predecessors]['cc0'])
-             l1.append(G.node[predecessors]['cc1'])
+        for predecessors in G.predecessors_iter(node):
+            l0.append(G.node[predecessors]['cc0'])
+            l1.append(G.node[predecessors]['cc1'])
 
-         if G.node[node]['gatetype'] == 'and':
+        if G.node[node]['gatetype'] == 'and':
             G.node[node]['cc0'] = min(l0) + 1
             G.node[node]['cc1'] = sum(l1) + 1
 
-         elif G.node[node]['gatetype'] == 'nand':
+        elif G.node[node]['gatetype'] == 'nand':
             G.node[node]['cc0'] = sum(l1) + 1
             G.node[node]['cc1'] = min(l0) + 1
 
-         elif G.node[node]['gatetype'] == 'or':
+        elif G.node[node]['gatetype'] == 'or':
             G.node[node]['cc0'] = sum(l0) + 1
             G.node[node]['cc1'] = min(l1) + 1
 
-         elif G.node[node]['gatetype'] == 'nor':
+        elif G.node[node]['gatetype'] == 'nor':
             G.node[node]['cc0'] = min(l1) + 1
             G.node[node]['cc1'] = sum(l0) + 1
 
-         elif G.node[node]['gatetype'] == 'not':    
+        elif G.node[node]['gatetype'] == 'not':    
             G.node[node]['cc0'] = sum(l1) + 1
             G.node[node]['cc1'] = sum(l0) + 1
 
-         elif G.node[node]['gatetype'] == 'xor':
+        elif G.node[node]['gatetype'] == 'xor':
             l2 = []
             l3 = []
             i = 0
             for predecessors in G.predecessors_iter(node):
                 if i % 2 == 0 :
-                   l2.append(G.node[predecessors]['cc0'])
-                   l3.append(G.node[predecessors]['cc1'])
+                    l2.append(G.node[predecessors]['cc0'])
+                    l3.append(G.node[predecessors]['cc1'])
                 else :
-                   l2.append(G.node[predecessors]['cc1'])
-                   l3.append(G.node[predecessors]['cc0'])
+                    l2.append(G.node[predecessors]['cc1'])
+                    l3.append(G.node[predecessors]['cc0'])
                 i += 1
             G.node[node]['cc0'] = min(sum(l0), sum(l1)) + 1
             G.node[node]['cc1'] = min(sum(l2), sum(l3)) + 1
 
-         elif G.node[node]['gatetype'] == 'xnor':
+        elif G.node[node]['gatetype'] == 'xnor':
             l2 = []
             l3 = []
             i = 0
             for predecessors in G.predecessors_iter(node):
                 if i % 2 == 0 :
-                   l2.append(G.node[predecessors]['cc0'])
-                   l3.append(G.node[predecessors]['cc1'])
+                    l2.append(G.node[predecessors]['cc0'])
+                    l3.append(G.node[predecessors]['cc1'])
                 else :
-                   l2.append(G.node[predecessors]['cc1'])
-                   l3.append(G.node[predecessors]['cc0'])
+                    l2.append(G.node[predecessors]['cc1'])
+                    l3.append(G.node[predecessors]['cc0'])
                 i += 1
             G.node[node]['cc0'] = min(sum(l2), sum(l3)) + 1
             G.node[node]['cc1'] = min(sum(l0), sum(l1)) + 1
@@ -390,84 +390,84 @@ def get_controllability(G, node):
 def preprocess(G):
     for items in G.nodes_iter(data=True):
         if items[1]['type'] != 'input' and items[1]['cc0'] == 1 and items[1]['cc1'] == 1:
-           get_controllability(G, items[0])
+            get_controllability(G, items[0])
 
 "checks if objective requires setting of all inputs"
 def all_inputs_req(G, input_edge, vs) : 
     if G.node[input_edge[0]]['gatetype'] == 'and' and vs == 1 :
-       return True
+        return True
     elif G.node[input_edge[0]]['gatetype'] == 'or' and vs == 0 :
-       return True
+        return True
     elif G.node[input_edge[0]]['gatetype'] == 'nand' and vs == 0 :
-       return True
+        return True
     elif G.node[input_edge[0]]['gatetype'] == 'nor' and vs == 1 :
-       return True
+        return True
     elif G.node[input_edge[0]]['gatetype'] == 'not' :
-       return True
+        return True
     else :
-       return False
+        return False
 
 
 "input_edge is a 2-tuple of nodes given in (source, dest) manner, where source and dest are numbers"
 "takes in a tuple, returns list"
 def Backtrace(G, input_edge, vs, implications):
- v = vs
- new_input_edge = list(input_edge)
- "tuple to list conversion is done as only lists, but not tuples can be updated"
- while G.node[new_input_edge[0]]['type'] == 'gate' :
-   if G.node[new_input_edge[0]]['gatetype'] == 'nand' or G.node[new_input_edge[0]]['gatetype'] == 'not' or G.node[new_input_edge[0]]['gatetype'] == 'nor' :
-    v = NOT(v)
-   ls = [x for x in G.in_edges(new_input_edge[0], data=True) if x[2]['value'] == 'x']
-   if all_inputs_req(G, new_input_edge, vs) : 
-    if v :
-     edge = max(ls, key=lambda x:G.node[x[0]]['cc1'])
-    else :
-     edge = max(ls, key=lambda x:G.node[x[0]]['cc0'])
-   else :
-    if v :
-     edge = min(ls, key=lambda x:G.node[x[0]]['cc1'])
-    else :
-     edge = min(ls, key=lambda x:G.node[x[0]]['cc0'])
-   new_input_edge[0] = edge[0]
- "add the objective at input to the implication stack"
- a = (new_input_edge[0], v)
- if len(implications) == 0 :
-    implications[a]=[]
- elif (a[0] != implications.last()[0][0]) or (a[1] != implications.last()[0][1]) : 
-    implications[a]=[]
- return a
+    v = vs
+    new_input_edge = list(input_edge)
+    "tuple to list conversion is done as only lists, but not tuples can be updated"
+    while G.node[new_input_edge[0]]['type'] == 'gate' :
+        if G.node[new_input_edge[0]]['gatetype'] == 'nand' or G.node[new_input_edge[0]]['gatetype'] == 'not' or G.node[new_input_edge[0]]['gatetype'] == 'nor' :
+            v = NOT(v)
+            ls = [x for x in G.in_edges(new_input_edge[0], data=True) if x[2]['value'] == 'x']
+        if all_inputs_req(G, new_input_edge, vs) : 
+            if v :
+                edge = max(ls, key=lambda x:G.node[x[0]]['cc1'])
+            else :
+                edge = max(ls, key=lambda x:G.node[x[0]]['cc0'])
+        else :
+            if v :
+                edge = min(ls, key=lambda x:G.node[x[0]]['cc1'])
+            else :
+                edge = min(ls, key=lambda x:G.node[x[0]]['cc0'])
+        new_input_edge[0] = edge[0]
+    "add the objective at input to the implication stack"
+    a = (new_input_edge[0], v)
+    if len(implications) == 0 :
+        implications[a]=[]
+    elif (a[0] != implications.last()[0][0]) or (a[1] != implications.last()[0][1]) : 
+        implications[a]=[]
+    return a
  # objects returned are the primary input and its objective value 
 
 "Backtrack returns a tuple (node,value), which is the new PI assignment OR an empty list"
 def Backtrack(G, implications) : 
     if len(implications) == 0 :
-       "do nothing"
+        "do nothing"
     elif len(implications) == 1 :
         "remove all assignments due to the item implications[len(implications)-1], accessed from hash table"
         for edges in implications.last()[1] :
-           edges[2]['value'] = 'x'
+            edges[2]['value'] = 'x'
            
         item = (implications.last()[0][0],NOT(implications.last()[0][1]))
         implications[item]=[]
     elif implications.last()[0][0] == implications.lastbutone()[0][0] : 
-       "remove all assignments due to the item implications[len(implications)-1], accessed from hash table"
-       for edges in implications.last()[1] :
-           edges[2]['value'] = 'x'
+        "remove all assignments due to the item implications[len(implications)-1], accessed from hash table"
+        for edges in implications.last()[1] :
+            edges[2]['value'] = 'x'
            
-       del implications[implications.last()[0]]
-       del implications[implications.lastbutone()[0]]
-       Backtrack(G, implications)
+        del implications[implications.last()[0]]
+        del implications[implications.lastbutone()[0]]
+        Backtrack(G, implications)
     else :
-       item = (implications.last()[0][0],NOT(implications.last()[0][1]))
-       "remove all assignments due to the item implications[len(implications)-1], accessed from hash table"
-       for edges in implications.last()[1] :
-           edges[2]['value'] = 'x'
+        item = (implications.last()[0][0],NOT(implications.last()[0][1]))
+        "remove all assignments due to the item implications[len(implications)-1], accessed from hash table"
+        for edges in implications.last()[1] :
+            edges[2]['value'] = 'x'
            
-       implications[item]=[]
+        implications[item]=[]
     if not implications :
-       return ()
+        return ()
     else : 
-       return implications.last()[0]
+        return implications.last()[0]
 
 
 "PODEM algorithm"
@@ -475,37 +475,37 @@ def Backtrack(G, implications) :
 def podem_comb(G, implications, node1, node2, fvalue) :
     po_list = get_po_list(G) 
     while not has_fault_propagated(G, po_list) : 
-          dfrontier = get_d_frontier(G)
-          if x_path_check(dfrontier) :
-             [l, vl] = Objective(G, node1, node2, fvalue)
-             [pi, vpi] = Backtrace(G, l, vl, implications)
-             "print [pi, vpi]"
-             imply(G, pi, str(vpi),implications)
-             if podem_comb(G, implications, node1, node2, fvalue) : 
+        dfrontier = get_d_frontier(G)
+        if x_path_check(dfrontier) :
+            [l, vl] = Objective(G, node1, node2, fvalue)
+            [pi, vpi] = Backtrace(G, l, vl, implications)
+            "print [pi, vpi]"
+            imply(G, pi, str(vpi),implications)
+            if podem_comb(G, implications, node1, node2, fvalue) : 
                 return True
-             result = Backtrack(G, implications)  # Backtrack can return new PI assignmnet or an empty list
-             if not result :  # implications list has been exhausted
+                result = Backtrack(G, implications)  # Backtrack can return new PI assignmnet or an empty list
+            if not result :  # implications list has been exhausted
                 return False
-             else : 
+            else : 
                 pi = result[0]
                 vpi = result[1]
-             imply(G, pi, str(vpi),implications)
-             if podem_comb(G, implications, node1, node2, fvalue) : 
+                imply(G, pi, str(vpi),implications)
+            if podem_comb(G, implications, node1, node2, fvalue) : 
                 return True
-             imply(G, pi, 'x',implications)
-             return False
-          elif not implications : 
-             return False
-          else :
-             result = Backtrack(G, implications)
+            imply(G, pi, 'x',implications)
+            return False
+        elif not implications : 
+            return False
+        else :
+            result = Backtrack(G, implications)
     return True
           
 
 def fault_assign(G, node1, node2, fvalue) :
     if fvalue : 
-       G[node1][node2]['value'] = 'D_bar'
+        G[node1][node2]['value'] = 'D_bar'
     else : 
-       G[node1][node2]['value'] = 'D'           
+        G[node1][node2]['value'] = 'D'           
 
 
 G = nx.DiGraph()
